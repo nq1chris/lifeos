@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>LifeOS</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#090B10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LifeOS">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#090B10;--card:#151A25;--card2:#1C2331;--blue:#2563EB;--text:#F3F5F9;--mute:#8A93A6;--ok:#34D399;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;max-width:480px;margin:0 auto;min-height:100vh}
+#app{padding:20px 18px 130px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:4px}
+h1{font-size:25px;margin:0;font-weight:700;letter-spacing:-.3px;cursor:pointer}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--card2) center/cover;border:2px solid var(--blue);display:grid;place-items:center;font-weight:700;cursor:pointer}
+.card{background:var(--card);border-radius:22px;padding:16px;animation:up .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero{display:flex;align-items:center;gap:18px;margin-bottom:12px}
+.ring{position:relative;width:118px;height:118px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+.ring .bg{stroke:var(--card2)}
+.ring .fg{stroke:var(--blue);transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)}
+.ring .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.big{font-size:26px;font-weight:700}
+.lbl{font-size:12px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card .v{font-size:22px;font-weight:700;margin-top:6px}
+.card .v small{font-size:13px;color:var(--mute);font-weight:500}
+.bar{height:6px;background:var(--card2);border-radius:9px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue);border-radius:9px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.ico{font-size:18px}
+.add{margin-top:10px;border:0;background:var(--blue);color:#fff;border-radius:12px;padding:7px 12px;font-size:13px;font-weight:600}
+.add:active{transform:scale(.94)}
+h2{font-size:17px;margin:22px 0 10px}
+.ev{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--card2)}
+.ev:first-of-type{border-top:0}
+.ev b{color:var(--blue);min-width:52px;font-size:14px}
+.ev span{font-size:12px;color:var(--mute);display:block}
+#fab{position:fixed;right:max(18px,calc(50% - 222px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:62px;height:62px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:34px;box-shadow:0 8px 28px rgba(37,99,235,.55);z-index:30;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+#fab.open{transform:rotate(135deg)}
+#veil{position:fixed;inset:0;background:rgba(9,11,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20}
+#veil.open{opacity:1;pointer-events:auto}
+#menu{position:fixed;right:max(18px,calc(50% - 222px));bottom:calc(100px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;align-items:flex-end;z-index:25;pointer-events:none}
+#menu.open{pointer-events:auto}
+.mi{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card2);color:var(--text);border-radius:18px;padding:12px 16px;font-size:15px;font-weight:600;opacity:0;transform:translateY(24px) scale(.9);transition:all .4s cubic-bezier(.3,1.4,.5,1)}
+#menu.open .mi{opacity:1;transform:none}
+.mi:active{background:var(--blue)}
+#sheet{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:var(--card);border-radius:28px 28px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.9,.3,1);z-index:40}
+#sheet.open{transform:none}
+#sheet{max-height:88vh;overflow:auto}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fi{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--card2)}
+.x{background:none;border:0;color:var(--mute);font-size:18px;padding:4px 8px}
+.row .btn{margin-bottom:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.tabs{display:flex;gap:6px;margin:12px 0}
+.tab{flex:1;border:0;border-radius:12px;padding:10px 0;background:var(--card2);color:var(--mute);font-weight:600;font-size:14px}
+.tab.on{background:var(--blue);color:#fff}
+.sm{background:var(--card2);border-radius:14px;padding:10px 6px;text-align:center}
+.sm b{display:block;font-size:17px;margin:2px 0}
+select,textarea{width:100%;background:var(--bg);border:1px solid var(--card2);color:var(--text);border-radius:14px;padding:14px;font-size:16px;margin-bottom:12px;font-family:inherit}
+input[type=date],input[type=time]{min-width:0}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cd{aspect-ratio:1;border-radius:12px;background:var(--card2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;border:0;color:var(--text);padding:0}
+.cd.td{outline:2px solid var(--blue)}
+.dots{display:flex;gap:2px;height:5px;margin-top:3px}
+.dots i{width:5px;height:5px;border-radius:50%}
+.ce{display:flex;gap:10px;padding:10px 12px;border-radius:14px;background:var(--card2);margin-bottom:8px;align-items:center}
+.ce>i{width:4px;align-self:stretch;border-radius:4px;flex:none}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0 12px}
+.nav button{background:var(--card2);border:0;color:var(--text);border-radius:12px;padding:8px 14px;font-size:15px}
+.card[data-go]{cursor:pointer}
+.card[data-go]:active{filter:brightness(1.3)}
+.bars{display:flex;gap:4px;height:100px;margin-top:10px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.bw{flex:1;width:100%;display:flex;align-items:flex-end}
+.bt{width:100%;background:var(--blue);border-radius:6px 6px 3px 3px;transition:height .6s}
+.bc .lbl{font-size:10px;height:12px}
+:root{--bad:#F87171}
+body{background:radial-gradient(120% 45% at 50% -8%,#13265c 0%,rgba(9,11,16,0) 70%),#090B10;background-attachment:fixed;font-variant-numeric:tabular-nums}
+.card{border:1px solid rgba(255,255,255,.06)}
+.card.hero{background:linear-gradient(135deg,#1E3A8A 0%,#151A25 65%);border-color:rgba(37,99,235,.35)}
+.ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:10px;background:rgba(37,99,235,.16);font-size:16px}
+.btn{transition:transform .15s}.btn:active{transform:scale(.98)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+#sheet{border-top:1px solid rgba(255,255,255,.08);box-shadow:0 -20px 60px rgba(0,0,0,.5)}
+.mi{box-shadow:0 6px 20px rgba(0,0,0,.35)}
+#cls{display:none;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:18px;z-index:50;place-items:center}
+.th{width:64px;height:64px;object-fit:cover;border-radius:10px}
+.thr{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.thw{position:relative}
+.thx{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:#F87171;color:#fff;font-size:12px;padding:0}
+#sheet h3{margin:0 0 8px;font-size:20px}
+#sheet p{color:var(--mute);margin:0 0 16px;line-height:1.5}
+input{width:100%;background:var(--bg);border:1px solid var(--card2);color:var(--text);border-radius:14px;padding:14px;font-size:16px;margin-bottom:12px}
+.btn{width:100%;border:0;background:var(--blue);color:#fff;border-radius:14px;padding:14px;font-size:16px;font-weight:600}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="veil"></div>
+<div id="menu"></div>
+<button id="fab" aria-label="Menü">+</button>
+<div id="sheet"></div>
+<input type="file" id="file" accept="image/*" hidden>
+<script>
+var S={name:"Chris",avatar:"",steps:0,stepLen:0.76,stepGoal:10000,foods:[],kcalGoal:2400,water:0,waterGoal:3000,plan:{},hist:[],bodyKg:80,work:[],wage:18,events:[],days:{},trades:[]};
+var today=new Date().toDateString();function applyData(sv){if(sv.day&&sv.day!==today){delete sv.foods;delete sv.water;delete sv.steps;S.foods=[];S.water=0;S.steps=0}for(var k in sv)S[k]=sv[k]}try{applyData(JSON.parse(localStorage.getItem("lifeos_preview")||"{}"))}catch(e){}
+function save(){S.days[iso()]={steps:S.steps,kcal:E(),water:S.water};try{var o={name:S.name,avatar:S.avatar,foods:S.foods,water:S.water,steps:S.steps,stepLen:S.stepLen,stepGoal:S.stepGoal,plan:S.plan,hist:S.hist,bodyKg:S.bodyKg,work:S.work,wage:S.wage,events:S.events,days:S.days,trades:S.trades,kcalGoal:S.kcalGoal,waterGoal:S.waterGoal,day:today};localStorage.setItem("lifeos_preview",JSON.stringify(o));cloud(o)}catch(e){}}
+var EV=[["09:00","Team-Meeting","Arbeit"],["13:30","Zahnarzt","Privat"],["18:00","Oberkörper-Training","Gym"]];
+var ITEMS=[["🥗","Ernährung & Wasser"],["🏋️","Gym & Trainingsplan"],["👟","Schritte & Distanz"],["📅","Kalender"],["💼","Arbeit & Verdienst"],["📊","Statistiken"],["⚙️","Profil & Einstellungen"],["📈","Trading & Journal"]];
+function greet(){var h=new Date().getHours();return h<11?"Guten Morgen":h<18?"Guten Tag":"Guten Abend"}
+function f(n,d){return n.toLocaleString("de-DE",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
+function pct(a,b){return Math.min(100,Math.round(a/b*100))}
+function render(){
+var left=Math.max(0,S.kcalGoal-E()),C=2*Math.PI*52,off=C*(1-Math.min(1,E()/S.kcalGoal));
+var km=S.steps*S.stepLen/1000,earn=W().d*S.wage;
+var date=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
+function c(i,ico,l,v,u,p,extra,g){return '<div class="card"'+(g!=null?' data-go="'+g+'"':'')+' style="animation-delay:'+(i*70)+'ms"><span class="ico">'+ico+'</span> <span class="lbl">'+l+'</span><div class="v">'+v+' <small>'+u+'</small></div>'+(p!=null?'<div class="bar"><i style="width:'+p+'%"></i></div>':'')+(extra||'')+'</div>'}
+document.getElementById("app").innerHTML=
+'<header><div><div class="sub">'+date+'</div><h1 id="nm">'+greet()+', '+S.name+'</h1></div><div class="avatar" id="av" style="'+(S.avatar?'background-image:url('+S.avatar+')':'')+'">'+(S.avatar?'':S.name.charAt(0).toUpperCase())+'</div></header>'+
+'<div class="card hero" data-go="0"><div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle class="bg" cx="59" cy="59" r="52"/><circle class="fg" cx="59" cy="59" r="52" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'" data-off="'+off+'"/></svg><div class="mid"><div class="big">'+f(left)+'</div><div class="lbl">kcal übrig</div></div></div><div><div class="lbl">Gegessen</div><div class="big">'+f(E())+' <small class="lbl">kcal</small></div><div class="lbl" style="margin-top:8px">Tagesziel '+f(S.kcalGoal)+' kcal</div></div></div>'+
+'<div class="grid">'+
+c(1,"👟","Schritte",f(S.steps),"/ "+f(S.stepGoal),pct(S.steps,S.stepGoal),null,2)+
+c(2,"📍","Distanz",f(km,1),"km",null,null,2)+
+c(3,"💧","Wasser",f(S.water/1000,2),"/ "+f(S.waterGoal/1000,1)+" L",pct(S.water,S.waterGoal),'<button class="add" id="w">+ 250 ml</button>',0)+
+c(4,"🔥","Gym verbrannt",f(G().k),"kcal",null,null,1)+
+c(5,"⏱️","Training",G().m,"min",null,null,1)+
+c(6,"🕒","Arbeitszeit",f(W().d,1),"Std.",null,null,4)+
+'</div><div class="grid" style="margin-top:12px"><div class="card" data-go="4" style="animation-delay:500ms"><span class="ico">💶</span> <span class="lbl">Heute verdient</span><div class="v">'+f(earn,2)+' <small>€</small></div></div><div class="card" data-go="7" style="animation-delay:560ms"><span class="ico">📈</span> <span class="lbl">Trading heute</span><div class="v" style="color:'+cl(T().d)+'">'+(T().d>0?'+':'')+f(T().d,2)+' <small>€</small></div></div></div>'+
+'<h2>Heutige Termine</h2><div class="card" data-go="3" style="animation-delay:600ms">'+TE()+'</div>';
+setTimeout(function(){var fg=document.querySelector(".fg");fg.style.strokeDashoffset=fg.dataset.off;document.querySelectorAll(".bar i").forEach(function(b){var w=b.style.width;b.style.width="0";requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.width=w})})})},50);
+document.getElementById("w").onclick=function(){addWater(250)};
+document.getElementById("nm").onclick=openName;
+document.getElementById("av").onclick=function(){document.getElementById("file").click()};
+}
+var menu=document.getElementById("menu"),fab=document.getElementById("fab"),veil=document.getElementById("veil"),sheet=document.getElementById("sheet");
+menu.innerHTML=ITEMS.map(function(it,i){return '<button class="mi" style="transition-delay:'+((ITEMS.length-i)*35)+'ms" data-i="'+i+'"><span>'+it[0]+'</span>'+it[1]+'</button>'}).join("");
+function toggle(o){var s=o===undefined?!fab.classList.contains("open"):o;fab.classList.toggle("open",s);menu.classList.toggle("open",s);veil.classList.toggle("open",s)}
+fab.onclick=function(){closeSheet();toggle()};
+veil.onclick=function(){toggle(false);closeSheet()};
+menu.onclick=function(e){var b=e.target.closest(".mi");if(!b)return;var it=ITEMS[b.dataset.i];toggle(false);if(b.dataset.i==="0"){veil.classList.add("open");openFood();return}if(b.dataset.i==="2"){veil.classList.add("open");openSteps();return}if(b.dataset.i==="1"){veil.classList.add("open");openGym();return}if(b.dataset.i==="4"){veil.classList.add("open");openWork();return}if(b.dataset.i==="3"){veil.classList.add("open");openCal();return}if(b.dataset.i==="5"){veil.classList.add("open");openStats();return}if(b.dataset.i==="6"){veil.classList.add("open");openProf();return}if(b.dataset.i==="7"){veil.classList.add("open");openTrade();return}veil.classList.add("open");sheet.innerHTML='<h3>'+it[0]+' '+it[1]+'</h3><p>Dieser Bereich wird im nächsten Schritt gebaut. Zuerst legen wir das Design fest.</p><button class="btn" id="ok">Verstanden</button>';sheet.classList.add("open");document.getElementById("ok").onclick=function(){closeSheet()}};
+function closeSheet(){sheet.classList.remove("open");if(!fab.classList.contains("open"))veil.classList.remove("open")}
+function openName(){veil.classList.add("open");sheet.innerHTML='<h3>Name ändern</h3><p>So soll dich LifeOS begrüßen.</p><input id="ni" value="'+S.name+'" maxlength="20"><button class="btn" id="sn">Speichern</button>';sheet.classList.add("open");document.getElementById("sn").onclick=function(){var v=document.getElementById("ni").value.trim();if(v){S.name=v;save();render()}closeSheet()}}
+var gd=new Date().getDay(),DN=["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"],ORD=[1,2,3,4,5,6,0];
+function iso(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function P(d){return S.plan[d]||(S.plan[d]={ex:[],min:60,kcal:400})}
+function est(p){var v=0;p.ex.forEach(function(x){v+=x[1]*x[2]*x[3]});var m=Math.max(1,p.min),met=Math.min(8,Math.max(4,4+v/m/100));return Math.round(met*S.bodyKg*m/60)}
+function G(){var k=0,m=0,t=iso();S.hist.forEach(function(h){if(h.d===t){k+=h.kcal;m+=h.min}});return{k:k,m:m}}
+function openGym(){var p=P(gd),isT=gd===new Date().getDay();
+var tabs=ORD.map(function(d){return '<button class="tab'+(d===gd?' on':'')+'" onclick="gd='+d+';openGym()">'+DN[d].slice(0,2)+'</button>'}).join("");
+var list=p.ex.length?p.ex.map(function(x,i){return '<div class="fi"><div>'+esc(x[0])+'<span class="lbl" style="display:block">'+x[1]+' Sätze × '+x[2]+' Wdh. · '+x[3]+' kg</span></div><button class="x" onclick="delEx('+i+')">✕</button></div>'}).join(""):'<p>Noch keine Übungen für diesen Tag.</p>';
+var H=S.hist.map(function(h,i){return[h,i]}).slice(-8).reverse();
+var hist=H.length?H.map(function(a){var h=a[0];return '<div class="fi"><div>'+DN[h.day]+', '+new Date(h.d+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})+'<span class="lbl" style="display:block">'+h.n+' Übungen · '+h.min+' min · '+h.kcal+' kcal</span><span class="lbl" style="display:block">'+esc(h.ex.map(function(x){return x[0]}).join(', '))+'</span></div><button class="x" onclick="delHist('+a[1]+')">✕</button></div>'}).join(""):'<p>Noch keine Einheit abgeschlossen.</p>';
+sheet.innerHTML='<h3>🏋️ Gym & Trainingsplan</h3><div class="tabs">'+tabs+'</div><p>'+DN[gd]+' · '+p.ex.length+' Übungen · '+p.min+' min · ca. '+est(p)+' kcal</p>'+list+'<h2>Übung hinzufügen</h2><input id="en" placeholder="Übung, z. B. Bankdrücken"><div class="row3"><input id="es" type="number" inputmode="numeric" placeholder="Sätze"><input id="er" type="number" inputmode="numeric" placeholder="Wdh."><input id="ew" type="number" inputmode="decimal" placeholder="kg"></div><button class="btn" onclick="addEx()">Hinzufügen</button><h2>Dauer & Körpergewicht</h2><div class="row"><div><div class="lbl">Dauer (min)</div><input id="gm" type="number" inputmode="numeric" value="'+p.min+'"></div><div><div class="lbl">Körpergewicht (kg)</div><input id="gk" type="number" inputmode="decimal" value="'+S.bodyKg+'"></div></div><p style="margin-top:12px">🔥 Geschätzt: <b>'+est(p)+' kcal</b> – berechnet aus Übungen, Gewichten, Dauer und Körpergewicht.</p><button class="btn" style="background:var(--card2)" onclick="saveGoal()">Speichern</button>'+(isT?'<button class="btn" style="margin-top:12px" onclick="finishGym()">✅ Training heute abschließen</button>':'<p style="margin-top:12px">Abschließen kannst du nur das heutige Training.</p>')+'<h2>Vergangene Einheiten</h2>'+hist;sheet.classList.add('open')}
+function addEx(){var n=document.getElementById('en').value.trim();if(!n)return;P(gd).ex.push([n,+document.getElementById('es').value||0,+document.getElementById('er').value||0,+document.getElementById('ew').value||0]);save();openGym()}
+function delEx(i){P(gd).ex.splice(i,1);save();openGym()}
+function saveGoal(){var p=P(gd),m=+document.getElementById('gm').value,k=+document.getElementById('gk').value;if(m>=0)p.min=Math.round(m);if(k>20&&k<400)S.bodyKg=k;save();openGym()}
+function finishGym(){var p=P(gd);if(!p.ex.length)return;S.hist.push({d:iso(),day:gd,n:p.ex.length,min:p.min,kcal:est(p),ex:p.ex.map(function(x){return x.slice()})});save();render();openGym()}
+function delHist(i){S.hist.splice(i,1);save();render();openGym()}
+var CATS=[['Arbeit','#2563EB'],['Privat','#A78BFA'],['Gym','#34D399'],['Sonstiges','#F59E0B']],cv='m',cd=new Date();cd.setHours(12,0,0,0);
+function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function cc(c){for(var i=0;i<CATS.length;i++)if(CATS[i][0]===c)return CATS[i][1];return '#8A93A6'}
+function evs(s){return S.events.filter(function(e){return e.d===s}).sort(function(a,b){return a.t<b.t?-1:a.t>b.t?1:0})}
+function TE(){var a=evs(iso());return a.length?a.map(function(e){return '<div class="ev"><b>'+e.t+'</b><div>'+esc(e.title)+'<span>'+e.cat+'</span></div></div>'}).join(''):'<p class="lbl" style="margin:6px 0">Heute keine Termine.</p>'}
+function cAdd(n){var d=new Date(cd);if(cv==='m')d.setMonth(d.getMonth()+n,1);else d.setDate(d.getDate()+(cv==='w'?7:1)*n);cd=d;openCal()}
+function cToday(){cd=new Date();cd.setHours(12,0,0,0);openCal()}
+function cGo(d){cd=new Date(cd.getFullYear(),cd.getMonth(),d,12);cv='d';openCal()}
+function cSet(s){cd=new Date(s+'T12:00:00');cv='d';openCal()}
+function evRow(e){return '<div class="ce" onclick="openEv('+e.id+')"><i style="background:'+cc(e.cat)+'"></i><div><b>'+e.t+'</b> '+esc(e.title)+'<span class="lbl" style="display:block">'+e.cat+(e.desc?' · '+esc(e.desc):'')+'</span></div></div>'}
+function openCal(){var t=ymd(new Date()),b='',title;
+if(cv==='m'){title=cd.toLocaleDateString('de-DE',{month:'long',year:'numeric'});var off=(new Date(cd.getFullYear(),cd.getMonth(),1,12).getDay()+6)%7,n=new Date(cd.getFullYear(),cd.getMonth()+1,0).getDate();b='<div class="cal">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(function(x){return '<div class="lbl">'+x+'</div>'}).join('');for(var i=0;i<off;i++)b+='<div></div>';for(var d=1;d<=n;d++){var s=ymd(new Date(cd.getFullYear(),cd.getMonth(),d,12));b+='<button class="cd'+(s===t?' td':'')+'" onclick="cGo('+d+')">'+d+'<span class="dots">'+evs(s).slice(0,3).map(function(e){return '<i style="background:'+cc(e.cat)+'"></i>'}).join('')+'</span></button>'}b+='</div>'}
+else if(cv==='w'){var ws=new Date(cd);ws.setDate(ws.getDate()-((ws.getDay()+6)%7));var we=new Date(ws);we.setDate(we.getDate()+6);title=ws.toLocaleDateString('de-DE',{day:'numeric',month:'short'})+' – '+we.toLocaleDateString('de-DE',{day:'numeric',month:'short'});for(var j=0;j<7;j++){var dt=new Date(ws);dt.setDate(ws.getDate()+j);var ds=ymd(dt),a=evs(ds);b+='<div style="margin-bottom:12px"><div style="font-weight:600;margin-bottom:6px;color:'+(ds===t?'var(--blue)':'var(--text)')+'" onclick="cSet(\''+ds+'\')">'+dt.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'short'})+'</div>'+(a.length?a.map(evRow).join(''):'<div class="lbl" onclick="cSet(\''+ds+'\')">Keine Termine</div>')+'</div>'}}
+else{title=cd.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});var a2=evs(ymd(cd));b=a2.length?a2.map(evRow).join(''):'<p>Keine Termine an diesem Tag.</p>'}
+sheet.innerHTML='<h3>📅 Kalender</h3><div class="tabs">'+[['d','Tag'],['w','Woche'],['m','Monat']].map(function(x){return '<button class="tab'+(cv===x[0]?' on':'')+'" onclick="cv=\''+x[0]+'\';openCal()">'+x[1]+'</button>'}).join('')+'</div><div class="nav"><button onclick="cAdd(-1)">‹</button><b style="flex:1;text-align:center;font-size:15px">'+title+'</b><button onclick="cToday()">Heute</button><button onclick="cAdd(1)">›</button></div>'+b+'<button class="btn" style="margin-top:14px" onclick="openEv(0)">+ Termin hinzufügen</button>';sheet.classList.add('open')}
+function openEv(id){var e=id?S.events.filter(function(x){return x.id===id})[0]:{d:ymd(cd),t:'09:00',title:'',desc:'',cat:'Privat'};
+sheet.innerHTML='<h3>'+(id?'Termin bearbeiten':'Neuer Termin')+'</h3><input id="et" placeholder="Titel" value="'+esc(e.title)+'"><div class="row"><input id="ed" type="date" value="'+e.d+'"><input id="eh" type="time" value="'+e.t+'"></div><textarea id="ee" rows="3" placeholder="Beschreibung (optional)">'+esc(e.desc)+'</textarea><select id="ec">'+CATS.map(function(c){return '<option'+(c[0]===e.cat?' selected':'')+'>'+c[0]+'</option>'}).join('')+'</select><button class="btn" onclick="saveEv('+id+')">Speichern</button>'+(id?'<button class="btn" style="background:var(--card2);margin-top:10px;color:#F87171" onclick="delEv('+id+')">Löschen</button>':'')+'<button class="btn" style="background:none;margin-top:6px;color:var(--mute)" onclick="openCal()">Abbrechen</button>';sheet.classList.add('open')}
+function saveEv(id){var g=function(i){return document.getElementById(i).value},o={d:g('ed'),t:g('eh'),title:g('et').trim(),desc:g('ee').trim(),cat:g('ec')};if(!o.title||!o.d||!o.t)return;if(id){S.events.forEach(function(x){if(x.id===id){x.d=o.d;x.t=o.t;x.title=o.title;x.desc=o.desc;x.cat=o.cat}})}else{o.id=Date.now();S.events.push(o)}cd=new Date(o.d+'T12:00:00');save();render();openCal()}
+function delEv(id){S.events=S.events.filter(function(x){return x.id!==id});save();render();openCal()}
+document.getElementById('app').onclick=function(e){if(e.target.closest('button'))return;var c=e.target.closest('[data-go]');if(!c)return;veil.classList.add('open');[openFood,openGym,openSteps,openCal,openWork,openStats,openProf,openTrade][+c.dataset.go]()};
+var sr=7;
+function dv(s){var d=s===iso()?{steps:S.steps,kcal:E(),water:S.water}:(S.days[s]||{}),g=0,e=0;S.hist.forEach(function(h){if(h.d===s)g+=h.kcal});S.work.forEach(function(w){if(w.d===s)e+=hrs(w)*S.wage});return{steps:d.steps||0,kcal:d.kcal||0,water:(d.water||0)/1000,gym:g,earn:e}}
+function ch(t,vals,lb,u,dec){var tot=vals.reduce(function(a,b){return a+b},0),mx=Math.max.apply(null,vals.concat([1]));return '<div style="margin-bottom:22px"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>'+t+'</b><span class="lbl">Σ '+f(tot,dec)+' '+u+' · Ø '+f(tot/vals.length,dec)+'</span></div><div class="bars">'+vals.map(function(v,i){return '<div class="bc"><div class="bw"><div class="bt" style="height:'+Math.max(3,Math.round(v/mx*100))+'%'+(v?'':';background:var(--card2)')+'"></div></div><span class="lbl">'+lb[i]+'</span></div>'}).join('')+'</div></div>'}
+function openStats(){var D=[],lb=[],i;for(i=sr-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);D.push(dv(ymd(d)));lb.push(sr===7?DN[d.getDay()].slice(0,2):((sr-1-i)%5===4?String(d.getDate()):''))}
+function pick(k){return D.map(function(x){return x[k]})}
+sheet.innerHTML='<h3>📊 Statistiken</h3><div class="tabs"><button class="tab'+(sr===7?' on':'')+'" onclick="sr=7;openStats()">7 Tage</button><button class="tab'+(sr===30?' on':'')+'" onclick="sr=30;openStats()">30 Tage</button></div>'+ch('👟 Schritte',pick('steps'),lb,'',0)+ch('🥗 Kalorien gegessen',pick('kcal'),lb,'kcal',0)+ch('💧 Wasser',pick('water'),lb,'L',1)+ch('🔥 Gym verbrannt',pick('gym'),lb,'kcal',0)+ch('💶 Verdienst',pick('earn'),lb,'€',2)+'<p class="lbl">Die Verläufe füllen sich, sobald du täglich Daten einträgst.</p>';sheet.classList.add('open')}
+function fld(l,id,v,m){return '<div class="lbl">'+l+'</div><input id="'+id+'" value="'+esc(String(v))+'"'+(m?' inputmode="decimal"':'')+'>'}
+function openProf(){sheet.innerHTML='<h3>⚙️ Profil & Einstellungen</h3><div style="display:flex;align-items:center;gap:14px;margin:12px 0 16px"><div class="avatar" style="width:64px;height:64px;flex:none;'+(S.avatar?'background-image:url('+S.avatar+')':'')+'" onclick="document.getElementById(\'file\').click()">'+(S.avatar?'':esc(S.name.charAt(0).toUpperCase()))+'</div><div class="lbl">Tippe auf das Bild, um ein Foto hochzuladen.</div></div>'+fld('Name','pn',S.name)+fld('Stundenlohn (€)','pw',S.wage,1)+fld('Kalorienziel (kcal)','pk',S.kcalGoal,1)+fld('Wasserziel (ml)','pa',S.waterGoal,1)+fld('Schrittziel','ps',S.stepGoal,1)+fld('Schrittlänge (m)','pl',S.stepLen,1)+fld('Körpergewicht (kg)','pb',S.bodyKg,1)+'<button class="btn" onclick="saveProf()">Speichern</button><button class="btn" style="background:var(--card2);margin-top:12px" onclick="logout()">Abmelden</button>';sheet.classList.add('open')}
+function saveProf(){var g=function(i){return document.getElementById(i).value.trim().replace(',','.')},nm=function(i){var s=g(i);return s===''?NaN:+s},n=g('pn'),v;if(n)S.name=n;v=nm('pw');if(v>=0)S.wage=v;v=nm('pk');if(v>0)S.kcalGoal=Math.round(v);v=nm('pa');if(v>0)S.waterGoal=Math.round(v);v=nm('ps');if(v>0)S.stepGoal=Math.round(v);v=nm('pl');if(v>0.2&&v<2)S.stepLen=v;v=nm('pb');if(v>20&&v<400)S.bodyKg=v;save();render();closeSheet()}
+var tv='s',tp=30,tcur=[],MK={'Forex':['EUR/USD','GBP/USD','USD/JPY','GBP/JPY','AUD/USD','USD/CHF','USD/CAD'],'Krypto':['BTC/USD','ETH/USD','SOL/USD','XRP/USD','BNB/USD'],'Indizes':['NASDAQ 100','S&P 500','DAX 40','Dow Jones'],'Rohstoffe':['Gold (XAU/USD)','Silber (XAG/USD)','Öl (WTI)'],'Aktien':['Tesla','Apple','Nvidia'],'Sonstiges':[]};
+function sm(a){return a.reduce(function(s,x){return s+x.pl},0)}
+function cl(x){return x>=0?'var(--ok)':'var(--bad)'}
+function fm(x){return (x>0?'+':'')+f(x,2)+' €'}
+function T(){var t=iso();return{d:sm(S.trades.filter(function(x){return x.d===t}))}}
+function msg(t){var m=document.createElement('div');m.textContent=t;m.style.cssText='position:fixed;left:16px;right:16px;bottom:100px;background:#1C2331;border:1px solid #2A3345;padding:14px;border-radius:14px;z-index:90;font-size:14px';document.body.appendChild(m);setTimeout(function(){m.remove()},4500)}
+function tfil(){var lim=null;if(tp){var d=new Date();d.setDate(d.getDate()-tp+1);lim=ymd(d)}return S.trades.filter(function(x){return !lim||x.d>=lim}).sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:a.id-b.id})}
+function eqc(a){if(!a.length)return '<p class="lbl">Noch keine Trades.</p>';var c=0,pts=[0];a.forEach(function(x){c+=x.pl;pts.push(c)});var mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts);if(mx===mn){mx+=1;mn-=1}var px=function(i){return i/(pts.length-1)*300},py=function(v){return 8+(mx-v)/(mx-mn)*104};var d=pts.map(function(v,i){return(i?'L':'M')+px(i).toFixed(1)+' '+py(v).toFixed(1)}).join('');return '<svg viewBox="0 0 300 120" style="width:100%;height:140px"><line x1="0" x2="300" y1="'+py(0)+'" y2="'+py(0)+'" stroke="#2A3345" stroke-dasharray="4 4"/><path d="'+d+'" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+px(pts.length-1)+'" cy="'+py(c)+'" r="4" fill="#2563EB"/></svg>'}
+function dbars(a){var m={};a.forEach(function(x){m[x.d]=(m[x.d]||0)+x.pl});var ks=Object.keys(m).sort().slice(-14);if(!ks.length)return '<p class="lbl">Noch keine Trades.</p>';var mx=Math.max.apply(null,ks.map(function(k){return Math.abs(m[k])}).concat([1])),bw=300/ks.length,o='';ks.forEach(function(k,i){var v=m[k],h=Math.max(2,Math.abs(v)/mx*48),y=v>=0?56-h:56;o+='<rect x="'+(i*bw+bw*.15).toFixed(1)+'" y="'+y+'" width="'+(bw*.7).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="3" style="fill:'+cl(v)+'"/><text x="'+(i*bw+bw/2).toFixed(1)+'" y="118" font-size="8" fill="#8A93A6" text-anchor="middle">'+k.slice(8)+'</text>'});return '<svg viewBox="0 0 300 122" style="width:100%"><line x1="0" x2="300" y1="56" y2="56" stroke="#2A3345"/>'+o+'</svg>'}
+function grp(a,k){var m={};a.forEach(function(x){var n=x[k]||'-';m[n]=(m[n]||0)+x.pl});var r=Object.keys(m).map(function(n){return[n,m[n]]}).sort(function(p,q){return Math.abs(q[1])-Math.abs(p[1])}).slice(0,6),mx=Math.max.apply(null,r.map(function(z){return Math.abs(z[1])}).concat([1]));return r.map(function(z){return '<div style="display:flex;align-items:center;gap:8px;margin:7px 0;font-size:13px"><span style="width:92px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(z[0])+'</span><div style="flex:1;height:8px;background:var(--card2);border-radius:6px"><div style="height:100%;width:'+Math.round(Math.abs(z[1])/mx*100)+'%;background:'+cl(z[1])+';border-radius:6px"></div></div><b style="color:'+cl(z[1])+';min-width:78px;text-align:right">'+fm(z[1])+'</b></div>'}).join('')||'<p class="lbl">Keine Daten.</p>'}
+function kb(l,v,c){return '<div class="sm"><div class="lbl">'+l+'</div><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>'}
+function openTrade(){var a=tfil(),w=a.filter(function(x){return x.pl>0}),l=a.filter(function(x){return x.pl<0}),g=sm(w),ls=-sm(l),tot=sm(a),pf=ls?g/ls:(g?Infinity:0),body;
+var tabs=[['s','Statistik'],['j','Journal']].map(function(x){return '<button class="tab'+(tv===x[0]?' on':'')+'" onclick="tv=\''+x[0]+'\';openTrade()">'+x[1]+'</button>'}).join('');
+var per=[[7,'7 Tage'],[30,'30 Tage'],[0,'Alle']].map(function(x){return '<button class="tab'+(tp===x[0]?' on':'')+'" onclick="tp='+x[0]+';openTrade()">'+x[1]+'</button>'}).join('');
+if(tv==='s'){body='<div class="row3" style="margin:4px 0 8px">'+kb('Gesamt',fm(tot),cl(tot))+kb('Gewinnrate',a.length?f(w.length/a.length*100,0)+' %':'-')+kb('Trades',a.length)+'</div><div class="row3">'+kb('Ø Gewinn',w.length?fm(g/w.length):'-','var(--ok)')+kb('Ø Verlust',l.length?fm(-ls/l.length):'-','var(--bad)')+kb('Profit Factor',isFinite(pf)?f(pf,2):(a.length?'∞':'-'))+'</div><h2>Kontoverlauf</h2>'+eqc(a)+'<h2>Ergebnis pro Tag</h2>'+dbars(a)+'<h2>Nach Markt</h2>'+grp(a,'mkt')+'<h2>Nach Instrument</h2>'+grp(a,'sym')}
+else{var J=a.slice().sort(function(p,q){return p.d<q.d?1:p.d>q.d?-1:q.id-p.id}),gm={},ord=[];J.forEach(function(x){if(!gm[x.d]){gm[x.d]=[];ord.push(x.d)}gm[x.d].push(x)});
+body=ord.length?ord.map(function(dd){var L=gm[dd];return '<div style="display:flex;justify-content:space-between;margin:16px 0 8px"><b>'+new Date(dd+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'short'})+'</b><b style="color:'+cl(sm(L))+'">'+fm(sm(L))+'</b></div>'+L.map(function(x){return '<div class="ce" onclick="openTf('+x.id+')"><i style="background:'+cl(x.pl)+'"></i><div style="flex:1;min-width:0"><b>'+esc(x.sym)+'</b> <span class="lbl">'+x.mkt+' · '+x.dir+'</span>'+(x.note?'<span class="lbl" style="display:block">'+esc(x.note)+'</span>':'')+(x.imgs.length?'<div class="thr" style="margin:8px 0 0">'+x.imgs.map(function(s,k){return '<img class="th" src="'+s+'" onclick="event.stopPropagation();showImg('+x.id+','+k+')">'}).join('')+'</div>':'')+'</div><b style="color:'+cl(x.pl)+'">'+fm(x.pl)+'</b></div>'}).join('')}).join(''):'<p>Noch keine Trades in diesem Zeitraum.</p>'}
+sheet.innerHTML='<h3>📈 Trading & Journal</h3><button class="btn" onclick="openTf(0)">+ Trade eintragen</button><div class="tabs">'+tabs+'</div><div class="tabs" style="margin-top:0">'+per+'</div>'+body;sheet.classList.add('open')}
+function tl(){var m=document.getElementById('tm').value;document.getElementById('tlst').innerHTML=(MK[m]||[]).map(function(s){return '<option value="'+esc(s)+'">'}).join('')}
+function tprev(){document.getElementById('tpv').innerHTML=tcur.map(function(s,i){return '<div class="thw"><img class="th" src="'+s+'"><button class="thx" onclick="tcur.splice('+i+',1);tprev()">✕</button></div>'}).join('')}
+function openTf(id){var e=id?S.trades.filter(function(x){return x.id===id})[0]:{d:iso(),mkt:'Forex',sym:'',dir:'Long',pl:0,note:'',imgs:[]};tcur=e.imgs.slice();
+sheet.innerHTML='<h3>'+(id?'Trade bearbeiten':'Neuer Trade')+'</h3><input id="td" type="date" value="'+e.d+'"><div class="row"><select id="tm" onchange="tl()">'+Object.keys(MK).map(function(m){return '<option'+(m===e.mkt?' selected':'')+'>'+m+'</option>'}).join('')+'</select><select id="tdr"><option'+(e.dir==='Long'?' selected':'')+'>Long</option><option'+(e.dir==='Short'?' selected':'')+'>Short</option></select></div><input id="ts" list="tlst" placeholder="Instrument, z. B. Gold, NASDAQ 100, BTC" value="'+esc(e.sym)+'"><datalist id="tlst"></datalist><div class="row"><select id="tk"><option'+(e.pl>=0?' selected':'')+'>Gewinn</option><option'+(e.pl<0?' selected':'')+'>Verlust</option></select><input id="ta" type="number" inputmode="decimal" placeholder="Betrag in €" value="'+(e.pl?Math.abs(e.pl):'')+'"></div><textarea id="tn" rows="2" placeholder="Notiz (optional)">'+esc(e.note)+'</textarea><div id="tpv" class="thr"></div><button class="btn" style="background:var(--card2)" onclick="document.getElementById(\'timg\').click()">📷 Screenshot hinzufügen</button><button class="btn" style="margin-top:10px" onclick="saveTf('+id+')">Speichern</button>'+(id?'<button class="btn" style="background:var(--card2);margin-top:10px;color:#F87171" onclick="delTf('+id+')">Löschen</button>':'')+'<button class="btn" style="background:none;margin-top:6px;color:var(--mute)" onclick="openTrade()">Abbrechen</button>';tl();tprev();sheet.classList.add('open')}
+function saveTf(id){var g=function(i){return document.getElementById(i).value},am=+g('ta'),mk=g('tm');if(!g('td')||g('ta')===''||!(am>=0))return msg('Bitte Datum und Betrag eintragen.');var o={d:g('td'),mkt:mk,sym:g('ts').trim()||mk,dir:g('tdr'),pl:g('tk')==='Verlust'?-am:am,note:g('tn').trim(),imgs:tcur.slice()};if(id){S.trades.forEach(function(x,i){if(x.id===id){o.id=id;S.trades[i]=o}})}else{o.id=Date.now();S.trades.push(o)}save();render();var ok=false;try{ok=JSON.parse(localStorage.getItem('lifeos_preview')).trades.length===S.trades.length}catch(e){}if(!ok)msg('Speicher voll: Der Trade ist nur vorübergehend gespeichert. Mit Supabase gibt es dieses Limit nicht.');tv='j';openTrade()}
+function delTf(id){S.trades=S.trades.filter(function(x){return x.id!==id});save();render();openTrade()}
+function showImg(id,i){var t=S.trades.filter(function(x){return x.id===id})[0];if(!t)return;var v=document.createElement('div');v.style.cssText='position:fixed;inset:0;background:#000;z-index:80;display:flex;align-items:center;justify-content:center';v.innerHTML='<img src="'+t.imgs[i]+'" style="max-width:100%;max-height:100%">';v.onclick=function(){v.remove()};document.body.appendChild(v)}
+document.body.insertAdjacentHTML('beforeend','<input type="file" id="timg" accept="image/*" hidden>');
+document.getElementById('timg').onchange=function(e){var fl=e.target.files[0];e.target.value='';if(!fl||tcur.length>=4)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,800/Math.max(im.width,im.height)),c2=document.createElement('canvas');c2.width=Math.round(im.width*s);c2.height=Math.round(im.height*s);c2.getContext('2d').drawImage(im,0,0,c2.width,c2.height);tcur.push(c2.toDataURL('image/jpeg',.6));tprev()};im.src=r.result};r.readAsDataURL(fl)};
+var cls=document.createElement('button');cls.id='cls';cls.textContent='✕';cls.onclick=function(){toggle(false);closeSheet()};document.body.appendChild(cls);new MutationObserver(function(){cls.style.display=sheet.classList.contains('open')?'grid':'none'}).observe(sheet,{attributes:true,attributeFilter:['class']});
+function hrs(e){var a=e.from.split(':'),b=e.to.split(':'),m=(+b[0]*60+(+b[1]))-(+a[0]*60+(+a[1]));if(m<0)m+=1440;return Math.max(0,(m-(e.brk||0))/60)}
+function W(){var t=new Date(),ws=new Date(t.getFullYear(),t.getMonth(),t.getDate()-((t.getDay()+6)%7)),we=ws.getTime()+7*864e5,r={d:0,w:0,m:0},ti=iso();S.work.forEach(function(e){var h=hrs(e),dt=new Date(e.d+'T12:00:00');if(e.d===ti)r.d+=h;if(dt>=ws&&dt.getTime()<we)r.w+=h;if(dt.getFullYear()===t.getFullYear()&&dt.getMonth()===t.getMonth())r.m+=h});return r}
+function openWork(){var w=W(),wg=S.wage;function fe(x){return f(x,2)+' €'}
+var L=S.work.map(function(e,i){return[e,i]}).sort(function(a,b){return a[0].d<b[0].d?1:a[0].d>b[0].d?-1:0}).slice(0,12);
+var list=L.length?L.map(function(a){var e=a[0],h=hrs(e);return '<div class="fi"><div>'+new Date(e.d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short'})+' · '+e.from+'–'+e.to+'<span class="lbl" style="display:block">'+f(h,2)+' Std. · '+fe(h*wg)+(e.task?' · '+esc(e.task):'')+'</span>'+(e.note?'<span class="lbl" style="display:block">'+esc(e.note)+'</span>':'')+'</div><button class="x" onclick="delWork('+a[1]+')">✕</button></div>'}).join(''):'<p>Noch keine Arbeitszeiten.</p>';
+function bx(l,h){return '<div class="sm"><div class="lbl">'+l+'</div><b>'+f(h,1)+' Std.</b><div class="lbl">'+fe(h*wg)+'</div></div>'}
+sheet.innerHTML='<h3>💼 Arbeit & Verdienst</h3><div class="row3" style="margin:12px 0">'+bx('Heute',w.d)+bx('Woche',w.w)+bx('Monat',w.m)+'</div><div class="lbl">Stundenlohn (€)</div><div class="row"><input id="wg" type="number" inputmode="decimal" value="'+wg+'"><button class="btn" style="background:var(--card2)" onclick="setWage()">Speichern</button></div><h2>Arbeitszeit eintragen</h2><input id="wd" type="date" value="'+iso()+'"><div class="row3"><div><div class="lbl">Beginn</div><input id="wf" type="time" value="09:00"></div><div><div class="lbl">Ende</div><input id="wt" type="time" value="17:00"></div><div><div class="lbl">Pause (min)</div><input id="wb" type="number" inputmode="numeric" value="30"></div></div><input id="wk" placeholder="Tätigkeiten, z. B. Kundenbetreuung"><input id="wn" placeholder="Persönliche Notiz (optional)"><button class="btn" onclick="addWork()">Eintragen</button><h2>Letzte Einträge</h2>'+list;sheet.classList.add('open')}
+function addWork(){var g=function(i){return document.getElementById(i).value};if(!g('wd')||!g('wf')||!g('wt'))return;S.work.push({d:g('wd'),from:g('wf'),to:g('wt'),brk:+g('wb')||0,task:g('wk').trim(),note:g('wn').trim()});save();render();openWork()}
+function delWork(i){S.work.splice(i,1);save();render();openWork()}
+function setWage(){var v=+document.getElementById('wg').value;if(v>=0){S.wage=v;save();render();openWork()}}
+function openSteps(){var km=S.steps*S.stepLen/1000;sheet.innerHTML='<h3>👟 Schritte & Distanz</h3><p>'+f(S.steps)+' Schritte · '+f(km,2)+' km</p><div class="bar"><i style="width:'+pct(S.steps,S.stepGoal)+'%"></i></div><p style="margin-top:8px">Ziel: '+f(S.stepGoal)+' Schritte</p><input id="sn2" type="number" inputmode="numeric" placeholder="Schritte heute insgesamt"><button class="btn" onclick="setSteps(document.getElementById(\'sn2\').value)">Schritte speichern</button><h2>Einstellungen</h2><div class="row"><div><div class="lbl">Schrittlänge (m)</div><input id="sl" type="number" step="0.01" inputmode="decimal" value="'+S.stepLen+'"></div><div><div class="lbl">Schrittziel</div><input id="sg" type="number" inputmode="numeric" value="'+S.stepGoal+'"></div></div><button class="btn" style="background:var(--card2)" onclick="setCfg()">Einstellungen übernehmen</button>';sheet.classList.add("open")}
+function setSteps(n){if(n===""||!(+n>=0))return;S.steps=Math.round(+n);save();render();openSteps()}
+function setCfg(){var l=+document.getElementById("sl").value,g=+document.getElementById("sg").value;if(l>0.2&&l<2)S.stepLen=l;if(g>0)S.stepGoal=Math.round(g);save();render();openSteps()}
+function E(){return S.foods.reduce(function(a,x){return a+x[2]},0)}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return"&#"+c.charCodeAt(0)+";"})}
+function addWater(n){S.water=Math.max(0,Math.min(S.waterGoal*2,S.water+n));save();render();if(sheet.classList.contains("open"))openFood()}
+function addFood(){var n=document.getElementById("fn").value.trim(),g=+document.getElementById("fg").value,k=+document.getElementById("fk").value;if(!n||!(k>0))return;S.foods.push([n,g||0,Math.round(k)]);save();render();openFood()}
+function delFood(i){S.foods.splice(i,1);save();render();openFood()}
+function openFood(){var e=E(),l=Math.max(0,S.kcalGoal-e);sheet.innerHTML='<h3>🥗 Ernährung & Wasser</h3><p>'+f(e)+' kcal gegessen · '+f(l)+' kcal übrig</p><input id="fn" placeholder="Lebensmittel, z. B. Haferflocken"><div class="row"><input id="fg" type="number" inputmode="decimal" placeholder="Gramm"><input id="fk" type="number" inputmode="decimal" placeholder="Kalorien"></div><button class="btn" onclick="addFood()">Hinzufügen</button><h2>Heute gegessen</h2>'+(S.foods.length?S.foods.map(function(x,i){return '<div class="fi"><div>'+esc(x[0])+'<span class="lbl" style="display:block">'+x[1]+' g</span></div><div>'+f(x[2])+' kcal <button class="x" onclick="delFood('+i+')">✕</button></div></div>'}).join(""):'<p>Noch nichts eingetragen.</p>')+'<h2>Wasser: '+f(S.water)+' / '+f(S.waterGoal)+' ml</h2><div class="bar"><i style="width:'+pct(S.water,S.waterGoal)+'%"></i></div><div class="row" style="margin-top:12px"><input id="wm" type="number" inputmode="numeric" placeholder="Menge in ml"><button class="btn" onclick="addWater(+document.getElementById(\'wm\').value||0)">Eintragen</button></div><div class="row"><button class="btn" style="background:var(--card2)" onclick="addWater(250)">+ 250 ml</button><button class="btn" style="background:var(--card2)" onclick="addWater(500)">+ 500 ml</button></div>';sheet.classList.add("open")}
+document.getElementById("file").onchange=function(e){var fl=e.target.files[0];if(!fl)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var cv=document.createElement("canvas");cv.width=cv.height=160;var x=cv.getContext("2d"),s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);S.avatar=cv.toDataURL("image/jpeg",.8);save();render();if(document.getElementById("pn")&&sheet.classList.contains("open"))openProf()};im.src=r.result};r.readAsDataURL(fl)};
+var SB='https://wvnrigasyxtrsxyyenis.supabase.co',KEY='sb_publishable_Oj-voQNQpyJEp31MEH2vYQ_FN-Nm50o',SES=null,ct=null;
+try{SES=JSON.parse(localStorage.getItem('lifeos_session')||'null')}catch(e){}
+function hd(){return{'apikey':KEY,'Authorization':'Bearer '+SES.access_token,'Content-Type':'application/json'}}
+async function tok(body,gt){var r=await fetch(SB+'/auth/v1/token?grant_type='+gt,{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});var j=await r.json();if(!r.ok)throw new Error('auth');SES={access_token:j.access_token,refresh_token:j.refresh_token,exp:Date.now()+j.expires_in*1000-60000,uid:(j.user&&j.user.id)||(SES&&SES.uid)};try{localStorage.setItem('lifeos_session',JSON.stringify(SES))}catch(e){}}
+async function fresh(){if(SES&&Date.now()>SES.exp)await tok({refresh_token:SES.refresh_token},'refresh_token')}
+function cloud(o){if(!SES)return;clearTimeout(ct);ct=setTimeout(async function(){try{await fresh();var r=await fetch(SB+'/rest/v1/app_state?on_conflict=user_id',{method:'POST',headers:Object.assign(hd(),{'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify({user_id:SES.uid,data:o,updated_at:new Date().toISOString()})});if(!r.ok)throw 0}catch(e){msg('Offline: Die \u00c4nderung wird beim n\u00e4chsten Speichern \u00fcbertragen.')}},800)}
+async function pull(){await fresh();var r=await fetch(SB+'/rest/v1/app_state?select=data',{headers:hd()});if(!r.ok)throw 0;var j=await r.json();if(j.length&&j[0].data&&Object.keys(j[0].data).length)applyData(j[0].data);else save();render()}
+function showLogin(){var d=document.getElementById('lg')||document.createElement('div');d.id='lg';d.style.cssText='position:fixed;inset:0;z-index:100;background:#090B10;display:flex;align-items:center;justify-content:center;padding:24px';d.innerHTML='<div style="width:100%;max-width:380px"><div style="font-size:34px;font-weight:800;letter-spacing:-1px;margin-bottom:6px">LifeOS</div><div class="lbl" style="margin-bottom:22px">Melde dich an, um deine Daten zu laden.</div><input id="le" type="email" autocomplete="username" placeholder="E-Mail"><input id="lp" type="password" autocomplete="current-password" placeholder="Passwort"><button class="btn" id="lb">Anmelden</button><div id="lr" style="color:#F87171;margin-top:12px;font-size:14px;min-height:18px"></div></div>';document.body.appendChild(d);document.getElementById('lb').onclick=doLogin}
+async function doLogin(){var e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;try{await tok({email:e,password:p},'password');document.getElementById('lg').remove();await boot()}catch(x){document.getElementById('lr').textContent='Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort pr\u00fcfen.'}}
+function logout(){SES=null;try{localStorage.removeItem('lifeos_session');localStorage.removeItem('lifeos_preview')}catch(e){}location.reload()}
+async function boot(){if(!SES)return showLogin();try{await pull()}catch(e){}}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+render();boot();
+</script>
+</body>
+</html>
