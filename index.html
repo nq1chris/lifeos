@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>LifeOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#090B10">
+<meta name="theme-color" content="#02060C">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="LifeOS">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <style>
-:root{--bg:#090B10;--card:#151A25;--card2:#1C2331;--blue:#2563EB;--text:#F3F5F9;--mute:#8A93A6;--ok:#34D399;
+:root{--bg:#090B10;--card:#151A25;--card2:#1C2331;--blue:#00D4FF;--text:#F3F5F9;--mute:#8A93A6;--ok:#34D399;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -105,6 +107,61 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blue);box-s
 #sheet p{color:var(--mute);margin:0 0 16px;line-height:1.5}
 input{width:100%;background:var(--bg);border:1px solid var(--card2);color:var(--text);border-radius:14px;padding:14px;font-size:16px;margin-bottom:12px}
 .btn{width:100%;border:0;background:var(--blue);color:#fff;border-radius:14px;padding:14px;font-size:16px;font-weight:600}
+
+/* ===== J.A.R.V.I.S. HUD ===== */
+:root{--bg:#02060C;--card:#07121C;--card2:#0C1D2B;--blue:#00D4FF;--text:#E6FAFF;--mute:#6C93A6;--ok:#2DFFB0;--bad:#FF4D5E}
+@keyframes rot{to{transform:rotate(360deg)}}
+@keyframes pl{50%{opacity:.3}}
+@keyframes fp{50%{box-shadow:0 0 0 7px rgba(0,212,255,.1),0 0 44px rgba(0,212,255,1)}}
+body{font-family:'Rajdhani',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:17px;background:radial-gradient(90% 40% at 50% -5%,rgba(0,212,255,.22),transparent 70%),linear-gradient(rgba(0,212,255,.045) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(0,212,255,.045) 1px,transparent 1px) 0 0/34px 34px,#02060C;background-attachment:fixed}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;background:repeating-linear-gradient(transparent 0 2px,rgba(0,212,255,.022) 2px 3px)}
+input,select,textarea{font-family:inherit;border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.04)}
+h1{font-family:Orbitron,sans-serif;font-size:19px;letter-spacing:.04em;font-weight:700;text-shadow:0 0 14px rgba(0,212,255,.5)}
+h2{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,.5),transparent)}
+.sub{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:.16em;color:var(--blue);line-height:1.7}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);margin-right:6px;animation:pl 1.6s infinite}
+.avatar{border:2px solid var(--blue);box-shadow:0 0 16px rgba(0,212,255,.5)}
+.card{border-radius:14px;background:linear-gradient(160deg,rgba(0,212,255,.07),rgba(7,18,28,.88));border:1px solid rgba(0,212,255,.22);box-shadow:inset 0 0 24px rgba(0,212,255,.05),0 0 18px rgba(0,212,255,.05)}
+.card::before,.card::after{content:"";position:absolute;width:14px;height:14px;pointer-events:none;border:2px solid var(--blue);filter:drop-shadow(0 0 4px var(--blue))}
+.card::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-radius:14px 0 0 0}
+.card::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-radius:0 0 14px 0}
+.card.hero{background:linear-gradient(160deg,rgba(0,212,255,.1),rgba(7,18,28,.9));border-color:rgba(0,212,255,.4);flex-direction:column;gap:14px;padding:18px 14px}
+#app .lbl{text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+.v{font-family:Orbitron,sans-serif;font-size:19px;font-weight:500}
+.v small{font-size:11px}
+.big{font-family:Orbitron,sans-serif;font-size:26px;font-weight:700;text-shadow:0 0 16px rgba(0,212,255,.7)}
+.ico{border-radius:8px;background:rgba(0,212,255,.12)}
+.bar{height:5px;background:rgba(0,212,255,.1)}
+.bar i,.bt{background:linear-gradient(90deg,#0090B8,#00D4FF);box-shadow:0 0 10px var(--blue)}
+.add{background:var(--blue);color:#021018;font-weight:700;box-shadow:0 0 12px rgba(0,212,255,.5)}
+.reactor{position:relative;width:216px;height:216px}
+.reactor svg{width:100%;height:100%}
+.reactor circle.bg{fill:none;stroke:rgba(0,212,255,.1);stroke-width:8}
+.reactor circle.fg{fill:none;stroke-width:8;stroke-linecap:round;transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 1.5s cubic-bezier(.2,.8,.2,1)}
+.spin{transform-origin:100px 100px;animation:rot 40s linear infinite}
+.spin2{transform-origin:100px 100px;animation:rot 22s linear infinite reverse}
+.core{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.legend{display:flex;gap:8px;width:100%}
+.legend div{flex:1;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:8px 4px;text-align:center;font-size:13px;color:var(--mute)}
+.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.legend b{display:block;font-family:Orbitron,sans-serif;font-size:14px;color:var(--text);margin-top:2px}
+.brf{margin-bottom:12px}
+#brf{font-size:17px;line-height:1.45;margin-top:6px;min-height:54px}
+#brf::after{content:"\258D";color:var(--blue);animation:pl 1s steps(1) infinite}
+#fab{background:radial-gradient(circle,#BFF6FF 0,#00D4FF 28%,#0A5E7A 72%);color:#02202B;box-shadow:0 0 0 3px rgba(0,212,255,.25),0 0 28px rgba(0,212,255,.8);animation:fp 2.4s ease-in-out infinite}
+.mi{background:rgba(4,16,26,.92);border:1px solid rgba(0,212,255,.45);border-radius:12px;font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 0 16px rgba(0,212,255,.18)}
+#sheet{background:rgba(4,14,22,.95);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--blue);box-shadow:0 -10px 50px rgba(0,212,255,.15)}
+#sheet h3{font-family:Orbitron,sans-serif;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);text-shadow:0 0 12px rgba(0,212,255,.5)}
+.btn{background:linear-gradient(90deg,#0090B8,#00D4FF);color:#021018;font-family:Orbitron,sans-serif;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 0 18px rgba(0,212,255,.3)}
+.btn[style*="background"]{color:var(--text);box-shadow:none;border:1px solid rgba(0,212,255,.25)}
+.tab{border:1px solid transparent;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.06em}
+.tab.on{background:rgba(0,212,255,.16);color:var(--blue);border-color:var(--blue);box-shadow:0 0 12px rgba(0,212,255,.3)}
+.sm b{font-family:Orbitron,sans-serif;font-size:15px}
+.sm,.ce{border:1px solid rgba(0,212,255,.12)}
+#boot{position:fixed;inset:0;background:#02060C;z-index:200;display:grid;place-items:center;transition:opacity .7s}
+.b1{font-family:Orbitron,sans-serif;font-size:22px;letter-spacing:.3em;color:#00D4FF;text-shadow:0 0 18px #00D4FF;margin-top:14px}
+.b2{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:.2em;color:#6C93A6;margin-top:8px}
 </style>
 </head>
 <body>
@@ -115,9 +172,9 @@ input{width:100%;background:var(--bg);border:1px solid var(--card2);color:var(--
 <div id="sheet"></div>
 <input type="file" id="file" accept="image/*" hidden>
 <script>
-var S={name:"Chris",avatar:"",steps:0,stepLen:0.76,stepGoal:10000,foods:[],kcalGoal:2400,water:0,waterGoal:3000,plan:{},hist:[],bodyKg:80,work:[],wage:18,events:[],days:{},trades:[]};
-var today=new Date().toDateString();function applyData(sv){if(sv.day&&sv.day!==today){delete sv.foods;delete sv.water;delete sv.steps;S.foods=[];S.water=0;S.steps=0}for(var k in sv)S[k]=sv[k]}try{applyData(JSON.parse(localStorage.getItem("lifeos_preview")||"{}"))}catch(e){}
-function save(){S.days[iso()]={steps:S.steps,kcal:E(),water:S.water};try{var o={name:S.name,avatar:S.avatar,foods:S.foods,water:S.water,steps:S.steps,stepLen:S.stepLen,stepGoal:S.stepGoal,plan:S.plan,hist:S.hist,bodyKg:S.bodyKg,work:S.work,wage:S.wage,events:S.events,days:S.days,trades:S.trades,kcalGoal:S.kcalGoal,waterGoal:S.waterGoal,day:today};localStorage.setItem("lifeos_preview",JSON.stringify(o));cloud(o)}catch(e){}}
+var S={name:"Chris",avatar:"",steps:0,distKm:0,stepLen:0.76,stepGoal:10000,foods:[],kcalGoal:2400,water:0,waterGoal:3000,plan:{},hist:[],bodyKg:80,work:[],wage:18,events:[],days:{},trades:[]};
+var today=new Date().toDateString();function applyData(sv){if(sv.day&&sv.day!==today){delete sv.foods;delete sv.water;delete sv.steps;delete sv.distKm;S.foods=[];S.water=0;S.steps=0;S.distKm=0}for(var k in sv)S[k]=sv[k]}try{applyData(JSON.parse(localStorage.getItem("lifeos_preview")||"{}"))}catch(e){}
+function save(){S.days[iso()]={steps:S.steps,kcal:E(),water:S.water};try{var o={name:S.name,avatar:S.avatar,foods:S.foods,water:S.water,steps:S.steps,distKm:S.distKm,stepLen:S.stepLen,stepGoal:S.stepGoal,plan:S.plan,hist:S.hist,bodyKg:S.bodyKg,work:S.work,wage:S.wage,events:S.events,days:S.days,trades:S.trades,kcalGoal:S.kcalGoal,waterGoal:S.waterGoal,day:today};localStorage.setItem("lifeos_preview",JSON.stringify(o));cloud(o)}catch(e){}}
 var EV=[["09:00","Team-Meeting","Arbeit"],["13:30","Zahnarzt","Privat"],["18:00","Oberkörper-Training","Gym"]];
 var ITEMS=[["🥗","Ernährung & Wasser"],["🏋️","Gym & Trainingsplan"],["👟","Schritte & Distanz"],["📅","Kalender"],["💼","Arbeit & Verdienst"],["📊","Statistiken"],["⚙️","Profil & Einstellungen"],["📈","Trading & Journal"]];
 function greet(){var h=new Date().getHours();return h<11?"Guten Morgen":h<18?"Guten Tag":"Guten Abend"}
@@ -125,12 +182,14 @@ function f(n,d){return n.toLocaleString("de-DE",{minimumFractionDigits:d||0,maxi
 function pct(a,b){return Math.min(100,Math.round(a/b*100))}
 function render(){
 var left=Math.max(0,S.kcalGoal-E()),C=2*Math.PI*52,off=C*(1-Math.min(1,E()/S.kcalGoal));
-var km=S.steps*S.stepLen/1000,earn=W().d*S.wage;
+var km=S.distKm>0?S.distKm:S.steps*S.stepLen/1000,earn=W().d*S.wage;
 var date=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
 function c(i,ico,l,v,u,p,extra,g){return '<div class="card"'+(g!=null?' data-go="'+g+'"':'')+' style="animation-delay:'+(i*70)+'ms"><span class="ico">'+ico+'</span> <span class="lbl">'+l+'</span><div class="v">'+v+' <small>'+u+'</small></div>'+(p!=null?'<div class="bar"><i style="width:'+p+'%"></i></div>':'')+(extra||'')+'</div>'}
+function rg(r,p,col){var C2=2*Math.PI*r;return '<circle class="bg" cx="100" cy="100" r="'+r+'"/><circle class="fg" cx="100" cy="100" r="'+r+'" stroke="'+col+'" style="filter:drop-shadow(0 0 4px '+col+')" stroke-dasharray="'+C2+'" stroke-dashoffset="'+C2+'" data-off="'+C2*(1-Math.min(1,p||0))+'"/>'}
 document.getElementById("app").innerHTML=
-'<header><div><div class="sub">'+date+'</div><h1 id="nm">'+greet()+', '+S.name+'</h1></div><div class="avatar" id="av" style="'+(S.avatar?'background-image:url('+S.avatar+')':'')+'">'+(S.avatar?'':S.name.charAt(0).toUpperCase())+'</div></header>'+
-'<div class="card hero" data-go="0"><div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle class="bg" cx="59" cy="59" r="52"/><circle class="fg" cx="59" cy="59" r="52" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'" data-off="'+off+'"/></svg><div class="mid"><div class="big">'+f(left)+'</div><div class="lbl">kcal übrig</div></div></div><div><div class="lbl">Gegessen</div><div class="big">'+f(E())+' <small class="lbl">kcal</small></div><div class="lbl" style="margin-top:8px">Tagesziel '+f(S.kcalGoal)+' kcal</div></div></div>'+
+'<header><div><div class="sub"><span class="dot"></span>SYSTEME ONLINE · <span id="clk"></span><br>'+date.toUpperCase()+'</div><h1 id="nm">'+greet()+', '+S.name+'</h1></div><div class="avatar" id="av" style="'+(S.avatar?'background-image:url('+S.avatar+')':'')+'">'+(S.avatar?'':S.name.charAt(0).toUpperCase())+'</div></header>'+
+'<div class="card hero" data-go="0"><div class="reactor"><svg viewBox="0 0 200 200"><circle class="spin" cx="100" cy="100" r="96" fill="none" stroke="rgba(0,212,255,.5)" stroke-width="1.5" stroke-dasharray="2 8"/><circle class="spin2" cx="100" cy="100" r="46" fill="none" stroke="rgba(0,212,255,.45)" stroke-width="1" stroke-dasharray="14 6"/>'+rg(84,E()/S.kcalGoal,'#00D4FF')+rg(70,S.steps/S.stepGoal,'#2DFFB0')+rg(56,S.water/S.waterGoal,'#4D8DFF')+'</svg><div class="core"><div class="big">'+f(left)+'</div><div class="lbl">kcal \u00fcbrig</div></div></div><div class="legend"><div data-go="0"><i style="background:#00D4FF"></i>Kalorien<b>'+pct(E(),S.kcalGoal)+'%</b></div><div data-go="2"><i style="background:#2DFFB0"></i>Schritte<b>'+pct(S.steps,S.stepGoal)+'%</b></div><div data-go="0"><i style="background:#4D8DFF"></i>Wasser<b>'+pct(S.water,S.waterGoal)+'%</b></div></div></div>'+
+'<div class="card brf"><div class="lbl">J.A.R.V.I.S. Briefing</div><div id="brf"></div></div>'+
 '<div class="grid">'+
 c(1,"👟","Schritte",f(S.steps),"/ "+f(S.stepGoal),pct(S.steps,S.stepGoal),null,2)+
 c(2,"📍","Distanz",f(km,1),"km",null,null,2)+
@@ -140,8 +199,8 @@ c(5,"⏱️","Training",G().m,"min",null,null,1)+
 c(6,"🕒","Arbeitszeit",f(W().d,1),"Std.",null,null,4)+
 '</div><div class="grid" style="margin-top:12px"><div class="card" data-go="4" style="animation-delay:500ms"><span class="ico">💶</span> <span class="lbl">Heute verdient</span><div class="v">'+f(earn,2)+' <small>€</small></div></div><div class="card" data-go="7" style="animation-delay:560ms"><span class="ico">📈</span> <span class="lbl">Trading heute</span><div class="v" style="color:'+cl(T().d)+'">'+(T().d>0?'+':'')+f(T().d,2)+' <small>€</small></div></div></div>'+
 '<h2>Heutige Termine</h2><div class="card" data-go="3" style="animation-delay:600ms">'+TE()+'</div>';
-setTimeout(function(){var fg=document.querySelector(".fg");fg.style.strokeDashoffset=fg.dataset.off;document.querySelectorAll(".bar i").forEach(function(b){var w=b.style.width;b.style.width="0";requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.width=w})})})},50);
-document.getElementById("w").onclick=function(){addWater(250)};
+setTimeout(function(){document.querySelectorAll(".fg").forEach(function(fg){fg.style.strokeDashoffset=fg.dataset.off});document.querySelectorAll(".bar i").forEach(function(b){var w=b.style.width;b.style.width="0";requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.width=w})})})},50);
+document.getElementById("w").onclick=function(){addWater(250)};tw();tick();
 document.getElementById("nm").onclick=openName;
 document.getElementById("av").onclick=function(){document.getElementById("file").click()};
 }
@@ -169,7 +228,7 @@ function delEx(i){P(gd).ex.splice(i,1);save();openGym()}
 function saveGoal(){var p=P(gd),m=+document.getElementById('gm').value,k=+document.getElementById('gk').value;if(m>=0)p.min=Math.round(m);if(k>20&&k<400)S.bodyKg=k;save();openGym()}
 function finishGym(){var p=P(gd);if(!p.ex.length)return;S.hist.push({d:iso(),day:gd,n:p.ex.length,min:p.min,kcal:est(p),ex:p.ex.map(function(x){return x.slice()})});save();render();openGym()}
 function delHist(i){S.hist.splice(i,1);save();render();openGym()}
-var CATS=[['Arbeit','#2563EB'],['Privat','#A78BFA'],['Gym','#34D399'],['Sonstiges','#F59E0B']],cv='m',cd=new Date();cd.setHours(12,0,0,0);
+var CATS=[['Arbeit','#00D4FF'],['Privat','#A78BFA'],['Gym','#34D399'],['Sonstiges','#F59E0B']],cv='m',cd=new Date();cd.setHours(12,0,0,0);
 function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
 function cc(c){for(var i=0;i<CATS.length;i++)if(CATS[i][0]===c)return CATS[i][1];return '#8A93A6'}
 function evs(s){return S.events.filter(function(e){return e.d===s}).sort(function(a,b){return a.t<b.t?-1:a.t>b.t?1:0})}
@@ -205,7 +264,7 @@ function fm(x){return (x>0?'+':'')+f(x,2)+' €'}
 function T(){var t=iso();return{d:sm(S.trades.filter(function(x){return x.d===t}))}}
 function msg(t){var m=document.createElement('div');m.textContent=t;m.style.cssText='position:fixed;left:16px;right:16px;bottom:100px;background:#1C2331;border:1px solid #2A3345;padding:14px;border-radius:14px;z-index:90;font-size:14px';document.body.appendChild(m);setTimeout(function(){m.remove()},4500)}
 function tfil(){var lim=null;if(tp){var d=new Date();d.setDate(d.getDate()-tp+1);lim=ymd(d)}return S.trades.filter(function(x){return !lim||x.d>=lim}).sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:a.id-b.id})}
-function eqc(a){if(!a.length)return '<p class="lbl">Noch keine Trades.</p>';var c=0,pts=[0];a.forEach(function(x){c+=x.pl;pts.push(c)});var mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts);if(mx===mn){mx+=1;mn-=1}var px=function(i){return i/(pts.length-1)*300},py=function(v){return 8+(mx-v)/(mx-mn)*104};var d=pts.map(function(v,i){return(i?'L':'M')+px(i).toFixed(1)+' '+py(v).toFixed(1)}).join('');return '<svg viewBox="0 0 300 120" style="width:100%;height:140px"><line x1="0" x2="300" y1="'+py(0)+'" y2="'+py(0)+'" stroke="#2A3345" stroke-dasharray="4 4"/><path d="'+d+'" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+px(pts.length-1)+'" cy="'+py(c)+'" r="4" fill="#2563EB"/></svg>'}
+function eqc(a){if(!a.length)return '<p class="lbl">Noch keine Trades.</p>';var c=0,pts=[0];a.forEach(function(x){c+=x.pl;pts.push(c)});var mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts);if(mx===mn){mx+=1;mn-=1}var px=function(i){return i/(pts.length-1)*300},py=function(v){return 8+(mx-v)/(mx-mn)*104};var d=pts.map(function(v,i){return(i?'L':'M')+px(i).toFixed(1)+' '+py(v).toFixed(1)}).join('');return '<svg viewBox="0 0 300 120" style="width:100%;height:140px"><line x1="0" x2="300" y1="'+py(0)+'" y2="'+py(0)+'" stroke="#2A3345" stroke-dasharray="4 4"/><path d="'+d+'" fill="none" stroke="#00D4FF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+px(pts.length-1)+'" cy="'+py(c)+'" r="4" fill="#00D4FF"/></svg>'}
 function dbars(a){var m={};a.forEach(function(x){m[x.d]=(m[x.d]||0)+x.pl});var ks=Object.keys(m).sort().slice(-14);if(!ks.length)return '<p class="lbl">Noch keine Trades.</p>';var mx=Math.max.apply(null,ks.map(function(k){return Math.abs(m[k])}).concat([1])),bw=300/ks.length,o='';ks.forEach(function(k,i){var v=m[k],h=Math.max(2,Math.abs(v)/mx*48),y=v>=0?56-h:56;o+='<rect x="'+(i*bw+bw*.15).toFixed(1)+'" y="'+y+'" width="'+(bw*.7).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="3" style="fill:'+cl(v)+'"/><text x="'+(i*bw+bw/2).toFixed(1)+'" y="118" font-size="8" fill="#8A93A6" text-anchor="middle">'+k.slice(8)+'</text>'});return '<svg viewBox="0 0 300 122" style="width:100%"><line x1="0" x2="300" y1="56" y2="56" stroke="#2A3345"/>'+o+'</svg>'}
 function grp(a,k){var m={};a.forEach(function(x){var n=x[k]||'-';m[n]=(m[n]||0)+x.pl});var r=Object.keys(m).map(function(n){return[n,m[n]]}).sort(function(p,q){return Math.abs(q[1])-Math.abs(p[1])}).slice(0,6),mx=Math.max.apply(null,r.map(function(z){return Math.abs(z[1])}).concat([1]));return r.map(function(z){return '<div style="display:flex;align-items:center;gap:8px;margin:7px 0;font-size:13px"><span style="width:92px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(z[0])+'</span><div style="flex:1;height:8px;background:var(--card2);border-radius:6px"><div style="height:100%;width:'+Math.round(Math.abs(z[1])/mx*100)+'%;background:'+cl(z[1])+';border-radius:6px"></div></div><b style="color:'+cl(z[1])+';min-width:78px;text-align:right">'+fm(z[1])+'</b></div>'}).join('')||'<p class="lbl">Keine Daten.</p>'}
 function kb(l,v,c){return '<div class="sm"><div class="lbl">'+l+'</div><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>'}
@@ -226,6 +285,12 @@ function showImg(id,i){var t=S.trades.filter(function(x){return x.id===id})[0];i
 document.body.insertAdjacentHTML('beforeend','<input type="file" id="timg" accept="image/*" hidden>');
 document.getElementById('timg').onchange=function(e){var fl=e.target.files[0];e.target.value='';if(!fl||tcur.length>=4)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,800/Math.max(im.width,im.height)),c2=document.createElement('canvas');c2.width=Math.round(im.width*s);c2.height=Math.round(im.height*s);c2.getContext('2d').drawImage(im,0,0,c2.width,c2.height);tcur.push(c2.toDataURL('image/jpeg',.6));tprev()};im.src=r.result};r.readAsDataURL(fl)};
 var cls=document.createElement('button');cls.id='cls';cls.textContent='✕';cls.onclick=function(){toggle(false);closeSheet()};document.body.appendChild(cls);new MutationObserver(function(){cls.style.display=sheet.classList.contains('open')?'grid':'none'}).observe(sheet,{attributes:true,attributeFilter:['class']});
+var typed=false;
+function brief(){var l=Math.max(0,S.kcalGoal-E()),w=Math.max(0,S.waterGoal-S.water),st=Math.max(0,S.stepGoal-S.steps),nw=('0'+new Date().getHours()).slice(-2)+':'+('0'+new Date().getMinutes()).slice(-2),ev=evs(iso()),nx=ev.filter(function(e){return e.t>=nw})[0],p=[greet()+', '+S.name+'. Alle Systeme online.'];p.push(st>0?'Bis zum Schrittziel fehlen noch '+f(st)+' Schritte.':'Schrittziel erreicht. Hervorragend.');p.push(w>0?'Wasser: noch '+f(w/1000,1)+' Liter.':'Wasserziel erreicht.');p.push(l>0?'Kalorien: '+f(l)+' kcal verf\u00fcgbar.':'Kalorienziel \u00fcberschritten.');p.push(nx?'N\u00e4chster Termin um '+nx.t+': '+nx.title+'.':(ev.length?'Alle Termine f\u00fcr heute erledigt.':'Keine Termine heute.'));return p.join(' ')}
+function tw(){var el=document.getElementById('brf');if(!el)return;var tx=brief();if(typed){el.textContent=tx;return}typed=true;var i=0;(function t(){el.textContent=tx.slice(0,++i);if(i<tx.length)setTimeout(t,16)})()}
+function tick(){var e=document.getElementById('clk');if(e)e.textContent=new Date().toLocaleTimeString('de-DE')}
+setInterval(tick,1000);
+(function(){var b=document.createElement('div');b.id='boot';b.innerHTML='<div style="text-align:center"><svg viewBox="0 0 100 100" width="120" height="120"><circle cx="50" cy="50" r="44" fill="none" stroke="#00D4FF" stroke-width="2" stroke-dasharray="6 6" style="transform-origin:50px 50px;animation:rot 6s linear infinite"/><circle cx="50" cy="50" r="28" fill="none" stroke="#00D4FF" stroke-width="3" style="animation:pl 1s infinite"/><circle cx="50" cy="50" r="8" fill="#00D4FF"/></svg><div class="b1">J.A.R.V.I.S.</div><div class="b2">INITIALISIERE SYSTEME \u2026</div></div>';document.body.appendChild(b);setTimeout(function(){b.style.opacity=0;setTimeout(function(){b.remove()},700)},1500)})();
 function hrs(e){var a=e.from.split(':'),b=e.to.split(':'),m=(+b[0]*60+(+b[1]))-(+a[0]*60+(+a[1]));if(m<0)m+=1440;return Math.max(0,(m-(e.brk||0))/60)}
 function W(){var t=new Date(),ws=new Date(t.getFullYear(),t.getMonth(),t.getDate()-((t.getDay()+6)%7)),we=ws.getTime()+7*864e5,r={d:0,w:0,m:0},ti=iso();S.work.forEach(function(e){var h=hrs(e),dt=new Date(e.d+'T12:00:00');if(e.d===ti)r.d+=h;if(dt>=ws&&dt.getTime()<we)r.w+=h;if(dt.getFullYear()===t.getFullYear()&&dt.getMonth()===t.getMonth())r.m+=h});return r}
 function openWork(){var w=W(),wg=S.wage;function fe(x){return f(x,2)+' €'}
@@ -236,8 +301,8 @@ sheet.innerHTML='<h3>💼 Arbeit & Verdienst</h3><div class="row3" style="margin
 function addWork(){var g=function(i){return document.getElementById(i).value};if(!g('wd')||!g('wf')||!g('wt'))return;S.work.push({d:g('wd'),from:g('wf'),to:g('wt'),brk:+g('wb')||0,task:g('wk').trim(),note:g('wn').trim()});save();render();openWork()}
 function delWork(i){S.work.splice(i,1);save();render();openWork()}
 function setWage(){var v=+document.getElementById('wg').value;if(v>=0){S.wage=v;save();render();openWork()}}
-function openSteps(){var km=S.steps*S.stepLen/1000;sheet.innerHTML='<h3>👟 Schritte & Distanz</h3><p>'+f(S.steps)+' Schritte · '+f(km,2)+' km</p><div class="bar"><i style="width:'+pct(S.steps,S.stepGoal)+'%"></i></div><p style="margin-top:8px">Ziel: '+f(S.stepGoal)+' Schritte</p><input id="sn2" type="number" inputmode="numeric" placeholder="Schritte heute insgesamt"><button class="btn" onclick="setSteps(document.getElementById(\'sn2\').value)">Schritte speichern</button><h2>Einstellungen</h2><div class="row"><div><div class="lbl">Schrittlänge (m)</div><input id="sl" type="number" step="0.01" inputmode="decimal" value="'+S.stepLen+'"></div><div><div class="lbl">Schrittziel</div><input id="sg" type="number" inputmode="numeric" value="'+S.stepGoal+'"></div></div><button class="btn" style="background:var(--card2)" onclick="setCfg()">Einstellungen übernehmen</button>';sheet.classList.add("open")}
-function setSteps(n){if(n===""||!(+n>=0))return;S.steps=Math.round(+n);save();render();openSteps()}
+function openSteps(){var km=S.distKm>0?S.distKm:S.steps*S.stepLen/1000;sheet.innerHTML='<h3>👟 Schritte & Distanz</h3><p>'+f(S.steps)+' Schritte · '+f(km,2)+' km</p><div class="bar"><i style="width:'+pct(S.steps,S.stepGoal)+'%"></i></div><p style="margin-top:8px">Ziel: '+f(S.stepGoal)+' Schritte</p><input id="sn2" type="number" inputmode="numeric" placeholder="Schritte heute insgesamt"><button class="btn" onclick="setSteps(document.getElementById(\'sn2\').value)">Schritte speichern</button><h2>Einstellungen</h2><div class="row"><div><div class="lbl">Schrittlänge (m)</div><input id="sl" type="number" step="0.01" inputmode="decimal" value="'+S.stepLen+'"></div><div><div class="lbl">Schrittziel</div><input id="sg" type="number" inputmode="numeric" value="'+S.stepGoal+'"></div></div><button class="btn" style="background:var(--card2)" onclick="setCfg()">Einstellungen übernehmen</button>';sheet.classList.add("open")}
+function setSteps(n){if(n===""||!(+n>=0))return;S.steps=Math.round(+n);S.distKm=0;save();render();openSteps()}
 function setCfg(){var l=+document.getElementById("sl").value,g=+document.getElementById("sg").value;if(l>0.2&&l<2)S.stepLen=l;if(g>0)S.stepGoal=Math.round(g);save();render();openSteps()}
 function E(){return S.foods.reduce(function(a,x){return a+x[2]},0)}
 function esc(s){return s.replace(/[&<>"]/g,function(c){return"&#"+c.charCodeAt(0)+";"})}
@@ -253,11 +318,12 @@ async function tok(body,gt){var r=await fetch(SB+'/auth/v1/token?grant_type='+gt
 async function fresh(){if(SES&&Date.now()>SES.exp)await tok({refresh_token:SES.refresh_token},'refresh_token')}
 function cloud(o){if(!SES)return;clearTimeout(ct);ct=setTimeout(async function(){try{await fresh();var r=await fetch(SB+'/rest/v1/app_state?on_conflict=user_id',{method:'POST',headers:Object.assign(hd(),{'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify({user_id:SES.uid,data:o,updated_at:new Date().toISOString()})});if(!r.ok)throw 0}catch(e){msg('Offline: Die \u00c4nderung wird beim n\u00e4chsten Speichern \u00fcbertragen.')}},800)}
 async function pull(){await fresh();var r=await fetch(SB+'/rest/v1/app_state?select=data',{headers:hd()});if(!r.ok)throw 0;var j=await r.json();if(j.length&&j[0].data&&Object.keys(j[0].data).length)applyData(j[0].data);else save();render()}
-function showLogin(){var d=document.getElementById('lg')||document.createElement('div');d.id='lg';d.style.cssText='position:fixed;inset:0;z-index:100;background:#090B10;display:flex;align-items:center;justify-content:center;padding:24px';d.innerHTML='<div style="width:100%;max-width:380px"><div style="font-size:34px;font-weight:800;letter-spacing:-1px;margin-bottom:6px">LifeOS</div><div class="lbl" style="margin-bottom:22px">Melde dich an, um deine Daten zu laden.</div><input id="le" type="email" autocomplete="username" placeholder="E-Mail"><input id="lp" type="password" autocomplete="current-password" placeholder="Passwort"><button class="btn" id="lb">Anmelden</button><div id="lr" style="color:#F87171;margin-top:12px;font-size:14px;min-height:18px"></div></div>';document.body.appendChild(d);document.getElementById('lb').onclick=doLogin}
+function showLogin(){var d=document.getElementById('lg')||document.createElement('div');d.id='lg';d.style.cssText='position:fixed;inset:0;z-index:100;background:#02060C;display:flex;align-items:center;justify-content:center;padding:24px';d.innerHTML='<div style="width:100%;max-width:380px"><div style="font-family:Orbitron,sans-serif;font-size:26px;font-weight:700;letter-spacing:.2em;color:#00D4FF;text-shadow:0 0 18px #00D4FF;margin-bottom:6px">LIFEOS</div><div class="lbl" style="margin-bottom:22px">Authentifizierung erforderlich.</div><input id="le" type="email" autocomplete="username" placeholder="E-Mail"><input id="lp" type="password" autocomplete="current-password" placeholder="Passwort"><button class="btn" id="lb">Anmelden</button><div id="lr" style="color:#F87171;margin-top:12px;font-size:14px;min-height:18px"></div></div>';document.body.appendChild(d);document.getElementById('lb').onclick=doLogin}
 async function doLogin(){var e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;try{await tok({email:e,password:p},'password');document.getElementById('lg').remove();await boot()}catch(x){document.getElementById('lr').textContent='Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort pr\u00fcfen.'}}
 function logout(){SES=null;try{localStorage.removeItem('lifeos_session');localStorage.removeItem('lifeos_preview')}catch(e){}location.reload()}
 async function boot(){if(!SES)return showLogin();try{await pull()}catch(e){}}
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&SES)pull().catch(function(){})});
 render();boot();
 </script>
 </body>
